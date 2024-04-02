@@ -11,5 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "playwright-chromium": "^1.42.1"
-  }
+  },
+  "type": "module"
 }
