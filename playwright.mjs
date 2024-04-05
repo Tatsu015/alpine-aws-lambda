@@ -7,7 +7,7 @@ const LaunchOption = {
   headless: true,
 };
 
-export const handler = async (event) => {
+export const scrape = async (event) => {
   const browser = await chromium.launch(LaunchOption);
   const context = await browser.newContext({ userAgent: UserAgent });
   const page = await context.newPage();
@@ -16,14 +16,11 @@ export const handler = async (event) => {
   const txt = await page.locator("body").innerText();
 
   console.log(">> RUN SUCCESS!");
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify("result: ", txt),
-  };
-  console.log("res: ", response);
   console.log("<< RUN END!");
   await page.close();
   await context.close();
   await browser.close();
-  return response;
+
+  console.log(txt);
+  return txt;
 };

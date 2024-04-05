@@ -43,4 +43,4 @@ ENV NODE_ENV production
 # Set runtime interface client as default command for the container runtime
 ENTRYPOINT ["/usr/local/bin/npx", "aws-lambda-ric"]
 # Pass the name of the function handler as an argument to the runtime
-CMD ["playwright.handler"]
+CMD ["index.handler"]

@@ -1,7 +1,7 @@
-import { handler } from './playwright.mjs';
+import { f } from "./playwright.mjs";
 
 (async () => {
-    const res = await handler(null)
-    console.log(res)
-    return res
+  const res = await f();
+  console.log(res);
+  return res;
 })();
