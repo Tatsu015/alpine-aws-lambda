@@ -1,7 +1,7 @@
 # Define custom function directory
 ARG FUNCTION_DIR="/function"
 
-FROM debian:12.5-slim as build-image
+FROM node:20-buster
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
@@ -13,13 +13,7 @@ RUN apt-get update && \
     make \
     cmake \
     unzip \
-    libcurl4-openssl-dev \
-    tini \
-    nodejs \
-    npm \
-    autoconf \
-    automake \
-    libtool
+    libcurl4-openssl-dev
 
 # Copy function code
 RUN mkdir -p ${FUNCTION_DIR}
@@ -34,20 +28,11 @@ RUN npm install
 RUN npm install aws-lambda-ric
 
 # Grab a fresh slim copy of the image to reduce the final size
-FROM debian:12.5-slim
+# FROM node:20-buster-slim
 
 # Required for Node runtimes which use npm@8.6.0+ because
 # by default npm writes logs under /home/.npm and Lambda fs is read-only
 ENV NPM_CONFIG_CACHE=/tmp/.npm
-
-# Include global arg in this stage of the build
-ARG FUNCTION_DIR
-
-# Set working directory to function root directory
-WORKDIR ${FUNCTION_DIR}
-
-# Copy in the built dependencies
-COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
 
 # Set runtime interface client as default command for the container runtime
 ENTRYPOINT ["/usr/local/bin/npx", "aws-lambda-ric"]
