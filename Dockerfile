@@ -13,10 +13,12 @@ RUN apt-get update && \
     make \
     cmake \
     unzip \
-    libcurl4-openssl-dev
+    libcurl4-openssl-dev \
+    chromium
 
 # Copy function code
 RUN mkdir -p ${FUNCTION_DIR}
+
 COPY . ${FUNCTION_DIR}
 
 WORKDIR ${FUNCTION_DIR}
@@ -34,7 +36,11 @@ RUN npm install aws-lambda-ric
 # by default npm writes logs under /home/.npm and Lambda fs is read-only
 ENV NPM_CONFIG_CACHE=/tmp/.npm
 
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD 1
+ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
+ENV NODE_ENV production
+
 # Set runtime interface client as default command for the container runtime
 ENTRYPOINT ["/usr/local/bin/npx", "aws-lambda-ric"]
 # Pass the name of the function handler as an argument to the runtime
-CMD ["index.handler"]
+CMD ["playwright.handler"]

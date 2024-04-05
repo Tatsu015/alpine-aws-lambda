@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:container": "docker build --platform linux/amd64 -t aws-lambda:latest .",
-    "dev": "docker run --platform linux/amd64 -v ~/.aws-lambda-rie:/aws-lambda -p 9000:8080 --entrypoint /aws-lambda/aws-lambda-rie aws-lambda:latest /usr/local/bin/npx aws-lambda-ric index.handler",
+    "dev": "docker run --platform linux/amd64 -v ~/.aws-lambda-rie:/aws-lambda -p 9000:8080 --entrypoint /aws-lambda/aws-lambda-rie aws-lambda:latest /usr/local/bin/npx aws-lambda-ric playwright.handler",
     "get": "curl \"http://localhost:9000/2015-03-31/functions/function/invocations\" -d '{}'"
   },
   "keywords": [],
